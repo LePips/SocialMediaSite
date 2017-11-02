@@ -19,3 +19,6 @@ class Post(models.Model):
 
 	def __str__(self):
 		return self.content
+
+	def __unicode__(self):
+		return self.content

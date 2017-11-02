@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.utils import timezone
 
+from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -94,6 +95,17 @@ class PostList(APIView):
 	def post(self):
 		pass
 
+class IndividualPost(generics.ListAPIView):
+	serializer_class = PostSerializer
+
+	def get_queryset(self):
+		"""
+		This view should return a list of all the posts
+		for the currently authenticated user.
+		"""
+		post = self.kwargs['post_id']
+		return Post.objects.filter(pk=post)
+
 class ProfileList(APIView):
 	authentication_classes = (SessionAuthentication, TokenAuthentication)
 	permission_classes = (IsAuthenticated,)
@@ -105,4 +117,3 @@ class ProfileList(APIView):
 
 	def post(self):
 		pass
-		
